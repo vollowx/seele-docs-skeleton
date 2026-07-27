@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title or "seele docs" }}</title>
+    <link href="/client.css" rel="stylesheet" />
+    <script type="module" src="/lit-hydrate-support.js"></script>
+    <script type="module" src="/client.js"></script>
+
+    <style> body[dsd-pending] { display: none; } </style>
+    <noscript>
+      <style> body[dsd-pending] { display: block !important; } </style>
+    </noscript>
+  </head>
+  <body dsd-pending>
+    <nav>
+      <h2>entries</h2>
+      <ul>
+        {%- for item in collections.all %}
+          <li><a href="{{ item.url }}">{{ item.url }}</a></li>
+        {%- endfor %}
+      </ul>
+    </nav>
+    <main>
+      {{ content | safe }}
+    </main>
+
+    <script>
+      (function() {
+        if (!HTMLTemplateElement.prototype.hasOwnProperty('shadowRootMode')) {
+          (function attachShadowRoots(root) {
+            root.querySelectorAll("template[shadowrootmode]").forEach(template => {
+              const mode = template.getAttribute("shadowrootmode");
+              const shadowRoot = template.parentNode.attachShadow({ mode });
+              shadowRoot.appendChild(template.content);
+              template.remove();
+              attachShadowRoots(shadowRoot);
+            });
+          })(document);
+        }
+        document.body.removeAttribute('dsd-pending');
+      })();
+    </script>
+  </body>
+</html>

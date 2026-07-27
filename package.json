@@ -1,0 +1,18 @@
+{
+  "name": "seele-docs-skeleton",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.6",
+    "@lit-labs/eleventy-plugin-lit": "^1.0.6",
+    "esbuild": "^0.28.1",
+    "lightningcss": "^1.33.0"
+  },
+  "dependencies": {
+    "@vollowx/seele": "^0.13.0"
+  },
+  "scripts": {
+    "dev": "eleventy --serve",
+    "build": "eleventy"
+  }
+}
