@@ -10,7 +10,7 @@
     "lightningcss": "^1.33.0"
   },
   "dependencies": {
-    "@vollowx/seele": "^0.13.0"
+    "@vollowx/seele": "^0.13.3"
   },
   "scripts": {
     "dev": "eleventy --serve",
