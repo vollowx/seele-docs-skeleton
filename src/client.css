@@ -83,3 +83,55 @@ nav {
   height: 100%;
   width: 224px;
 }
+
+code[class*="language-"],
+pre[class*="language-"] {
+  color: var(--md-sys-color-on-surface);
+  background-color: var(--md-sys-color-surface-container);
+}
+
+.token.comment {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.token.prolog,
+.token.builtin {
+  color: var(--md-sys-color-tertiary);
+}
+
+.token.function,
+.token.symbol {
+  color: var(--md-sys-color-primary);
+}
+
+.token.punctuation {
+  color: var(--md-sys-color-outline);
+}
+
+.token.string,
+.token.char,
+.token.tag,
+.token.selector {
+  color: var(--md-sys-color-secondary);
+}
+
+.token.keyword {
+  color: var(--md-sys-color-tertiary);
+}
+
+.token.operator {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.token.constant,
+.token.boolean {
+  color: var(--md-sys-color-tertiary);
+}
+
+.token.variable {
+  color: var(--md-sys-color-on-surface);
+}
+
+.token.attr-name {
+  color: var(--md-sys-color-secondary);
+}

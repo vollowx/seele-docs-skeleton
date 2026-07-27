@@ -1,9 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
 import esbuild from "esbuild";
-import markdownIt from "markdown-it";
 import { bundle } from "lightningcss";
+import markdownIt from "markdown-it";
 import litPlugin from "@lit-labs/eleventy-plugin-lit";
+import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 
 const isProd = process.env.ELEVENTY_RUN_MODE === "build";
 
@@ -176,6 +177,7 @@ export default function (eleventyConfig) {
   });
 
   processMarkdown(eleventyConfig);
+  eleventyConfig.addPlugin(syntaxHighlight);
 
   eleventyConfig.setServerOptions({ port: 22331 });
 
