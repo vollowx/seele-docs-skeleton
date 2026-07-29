@@ -20,16 +20,23 @@
   </head>
   <body dsd-pending>
     <nav>
-      <h2>entries</h2>
+      <h2>Entries</h2>
       <ul>
         {%- for item in collections.all %}
-          <li><a href="{{ item.url }}">{{ item.url }}</a></li>
+          <li><a href="{{ item.url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.url }}</a></li>
         {%- endfor %}
       </ul>
     </nav>
     <main>
       {{ content | safe }}
     </main>
+    <footer>
+      <md-divider></md-divider>
+      <p>
+        Copyright © 2023-2026 by Lucas X. Zhao.<br />
+        Last built at {{ buildTime.formatted }} with Eleventy {{ eleventy.version }}.
+      </p>
+    </footer>
 
     <script>
       (function() {

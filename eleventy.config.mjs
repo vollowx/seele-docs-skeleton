@@ -15,6 +15,18 @@ const esbuildOpts = {
   sourcemap: !isProd,
 };
 
+const now = () => {
+  const now = new Date();
+  return {
+    raw: now,
+    iso: now.toISOString(),
+    formatted: new Intl.DateTimeFormat("en-US", {
+      dateStyle: "short",
+      timeStyle: "short",
+    }).format(now),
+  };
+};
+
 /**
  * e.g. "/04-Base/10-Dialog.md" -> "/base/dialog/"
  * e.g. "/05-Material_You_expressive/10-Dialog.md" -> "/m3/dialog/"
@@ -186,6 +198,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("seele/docs/**/*.png");
   eleventyConfig.addPassthroughCopy("seele/docs/**/*.svg");
 
+  eleventyConfig.addGlobalData("buildTime", now());
   eleventyConfig.addGlobalData("layout", "base.njk");
   eleventyConfig.addGlobalData("eleventyComputed", {
     permalink: (data) => {
