@@ -7,6 +7,13 @@ import litPlugin from "@lit-labs/eleventy-plugin-lit";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
 
 const isProd = process.env.ELEVENTY_RUN_MODE === "build";
+const esbuildOpts = {
+  bundle: true,
+  format: "esm",
+  target: "esnext",
+  minify: isProd,
+  sourcemap: !isProd,
+};
 
 /**
  * e.g. "/04-Base/10-Dialog.md" -> "/base/dialog/"
@@ -34,15 +41,24 @@ const getPermalink = (filePath) => {
 };
 
 const bundleClientAssets = async () => {
+  console.log("[seele-docs-skeleton] Bundling client assets");
+
+  const componentEntryPoints = fs
+    .globSync("node_modules/@vollowx/seele/src/m3/*/*.js")
+    .filter((path) => !path.endsWith(".css.js"));
+
   await Promise.all([
     esbuild.build({
-      entryPoints: ["src/client.ts"],
-      outfile: "_site/client.js",
-      bundle: true,
-      format: "esm",
-      target: "esnext",
-      minify: isProd,
-      sourcemap: !isProd,
+      ...esbuildOpts,
+      entryPoints: componentEntryPoints,
+      outbase: "node_modules/@vollowx/seele/src/m3",
+      outdir: "_site/client",
+      splitting: true,
+    }),
+    esbuild.build({
+      ...esbuildOpts,
+      entryPoints: ["./src/client.ts"],
+      outfile: "_site/client/main.js",
     }),
     (async () => {
       const { code, map } = bundle({
@@ -50,30 +66,29 @@ const bundleClientAssets = async () => {
         minify: isProd,
         sourceMap: !isProd,
       });
-      fs.mkdirSync("_site", { recursive: true });
-      fs.writeFileSync("_site/client.css", code);
-      if (map) fs.writeFileSync("_site/client.css.map", map);
+      fs.mkdirSync("_site/client", { recursive: true });
+      fs.writeFileSync("_site/client/main.css", code);
+      if (map) fs.writeFileSync("_site/client/main.css.map", map);
     })(),
   ]);
 };
 
 const bundleSSRAssets = async () => {
+  console.log("[seele-docs-skeleton] Bundling SSR assets");
+
   await Promise.all([
     esbuild.build({
+      ...esbuildOpts,
       entryPoints: ["src/lit-hydrate-support.ts"],
-      outfile: "_site/lit-hydrate-support.js",
-      bundle: true,
-      format: "esm",
-      target: "esnext",
+      outfile: "_site/client/lit-hydrate-support.js",
       minify: true,
       sourcemap: false,
       splitting: false,
     }),
     esbuild.build({
+      ...esbuildOpts,
       entryPoints: ["src/ssr-entrypoint.ts"],
-      outfile: "_site/ssr-entrypoint.js",
-      bundle: true,
-      format: "esm",
+      outfile: ".tmp/ssr-entrypoint.js",
       platform: "node",
       minify: false,
       sourcemap: false,
@@ -156,10 +171,14 @@ const processMarkdown = (eleventyConfig) => {
 export default function (eleventyConfig) {
   eleventyConfig.on("eleventy.before", bundleClientAssets);
   if (isProd) {
+    fs.rmSync("_site", { recursive: true, force: true });
     eleventyConfig.on("eleventy.before", bundleSSRAssets);
     eleventyConfig.addPlugin(litPlugin, {
       mode: "worker",
-      componentModules: ["./_site/ssr-entrypoint.js"],
+      componentModules: [".tmp/ssr-entrypoint.js"],
+    });
+    eleventyConfig.on("eleventy.after", () => {
+      fs.rmSync(".tmp", { recursive: true, force: true });
     });
   }
 

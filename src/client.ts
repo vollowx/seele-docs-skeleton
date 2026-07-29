@@ -1,1 +1,1 @@
-import "@vollowx/seele";
+console.log("Hello Sailor!");

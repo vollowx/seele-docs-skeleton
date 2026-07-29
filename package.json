@@ -10,10 +10,11 @@
     "lightningcss": "^1.33.0"
   },
   "dependencies": {
-    "@vollowx/seele": "^0.13.3"
+    "@vollowx/seele": "../seele/"
   },
   "scripts": {
-    "dev": "eleventy --serve",
-    "build": "eleventy"
+    "dev": "eleventy --serve --incremental",
+    "build": "eleventy",
+    "serve": "python -m http.server -d ./_site/ 22332"
   }
 }

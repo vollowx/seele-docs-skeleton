@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title or "seele docs" }}</title>
-    <link href="/client.css" rel="stylesheet" />
-    <script type="module" src="/lit-hydrate-support.js"></script>
-    <script type="module" src="/client.js"></script>
+    <link href="/client/main.css" rel="stylesheet" />
+    <script type="module" src="/client/lit-hydrate-support.js"></script>
+    <script type="module" src="/client/main.js"></script>
+    {% if components %}
+      {% for component in components %}
+    <script type="module" src="/client/{{ component }}.js"></script>
+      {% endfor %}
+    {% endif %}
 
     <style> body[dsd-pending] { display: none; } </style>
     <noscript>
