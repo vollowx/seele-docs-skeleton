@@ -2,9 +2,10 @@ import fs from "node:fs";
 import path from "node:path";
 import esbuild from "esbuild";
 import { bundle } from "lightningcss";
-import markdownIt from "markdown-it";
 import litPlugin from "@lit-labs/eleventy-plugin-lit";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
+import markdownIt from "markdown-it";
+import markdownItAnchor from "markdown-it-anchor";
 
 const isProd = process.env.ELEVENTY_RUN_MODE === "build";
 const esbuildOpts = {
@@ -56,14 +57,17 @@ const bundleClientAssets = async () => {
   console.log("[seele-docs-skeleton] Bundling client assets");
 
   const componentEntryPoints = fs
-    .globSync("node_modules/@vollowx/seele/src/m3/*/*.js")
+    .globSync([
+      "node_modules/@vollowx/seele/src/m3/*/*.js",
+      "node_modules/@vollowx/seele/src/win98/*/*.js",
+    ])
     .filter((path) => !path.endsWith(".css.js"));
 
   await Promise.all([
     esbuild.build({
       ...esbuildOpts,
       entryPoints: componentEntryPoints,
-      outbase: "node_modules/@vollowx/seele/src/m3",
+      outbase: "node_modules/@vollowx/seele/src",
       outdir: "_site/client",
       splitting: true,
     }),
@@ -109,7 +113,10 @@ const bundleSSRAssets = async () => {
 };
 
 const processMarkdown = (eleventyConfig) => {
-  const md = markdownIt({ html: true, linkify: true });
+  const md = markdownIt({ html: true, linkify: true }).use(
+    markdownItAnchor,
+    {},
+  );
 
   // `<!-- @show -->`
   const defaultRender = md.render.bind(md);
@@ -215,8 +222,8 @@ export default function (eleventyConfig) {
 
   return {
     dir: {
-      input: "seele/docs",
-      includes: "../../_includes",
+      input: "docs",
+      includes: "../_includes",
       output: "_site",
     },
     markdownTemplateEngine: "njk",

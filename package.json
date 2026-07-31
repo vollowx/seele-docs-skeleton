@@ -7,10 +7,13 @@
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
     "@lit-labs/eleventy-plugin-lit": "^1.0.6",
     "esbuild": "^0.28.1",
-    "lightningcss": "^1.33.0"
+    "html-minifier": "^4.0.0",
+    "lightningcss": "^1.33.0",
+    "markdown-it-anchor": "^9.2.1"
   },
   "dependencies": {
-    "@vollowx/seele": "../seele/"
+    "@vollowx/seele": "^0.13.7",
+    "iconify-icon": "^3.0.2"
   },
   "scripts": {
     "dev": "eleventy --serve --incremental",
