@@ -29,6 +29,20 @@ const now = () => {
 };
 
 /**
+ * e.g. "/03-Server_side_rendering.md" -> "Server side rendering"
+ *
+ * @param {string} filePath
+ */
+const getLabel = (filePath) => {
+  if (!filePath) return "";
+  const fileName = filePath.split("/").pop();
+  return fileName
+    .replace(/^\d+-/, "")
+    .replace(/\.md$/, "")
+    .replace(/[_-]/g, " ");
+};
+
+/**
  * e.g. "/04-Base/10-Dialog.md" -> "/base/dialog/"
  * e.g. "/05-Material_You_expressive/10-Dialog.md" -> "/m3/dialog/"
  *
@@ -212,6 +226,11 @@ export default function (eleventyConfig) {
       const stem = data.page.filePathStem;
       if (!stem) return;
       return getPermalink(stem) + "index.html";
+    },
+    label: (data) => {
+      const stem = data.page.filePathStem;
+      if (!stem) return "";
+      return getLabel(stem);
     },
   });
 

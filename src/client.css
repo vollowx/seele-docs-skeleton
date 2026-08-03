@@ -155,9 +155,12 @@ nav {
     inset-inline-start: 16px;
     height: 100%;
     width: 224px;
+    overflow-y: auto;
 
     h2 {
-      opacity: 0;
+      height: 0;
+      margin: 0;
+      overflow-y: hidden;
     }
   }
 }

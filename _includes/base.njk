@@ -32,13 +32,26 @@
       <md-divider></md-divider>
     </footer>
 
-    <nav>
-      <h2>Entries</h2>
+    {% macro renderEntries(prefix, items, pageUrl) %}
       <ul>
-        {%- for item in collections.all %}
-          <li><a href="{{ item.url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.url }}</a></li>
+        {%- for item in items | sort(false, false, 'filePathStem') %}
+          {%- set isSub = "/base/" in item.url or "/m3/" in item.url or "/win98/" in item.url %}
+          {%- if (prefix == "/" and not isSub) or (prefix != "/" and prefix in item.url) %}
+            <li><a href="{{ item.url }}"{% if pageUrl == item.url %} aria-current="page"{% endif %}>{{ item.data.label or item.url }}</a></li>
+          {%- endif %}
         {%- endfor %}
       </ul>
+    {% endmacro %}
+
+    <nav>
+      <h2>Entries</h2>
+      {{ renderEntries("/", collections.all, page.url) }}
+      <span>/base</span>
+      {{ renderEntries("/base/", collections.all, page.url) }}
+      <span>/m3</span>
+      {{ renderEntries("/m3/", collections.all, page.url) }}
+      <span>/win98</span>
+      {{ renderEntries("/win98/", collections.all, page.url) }}
     </nav>
 
     <script>
