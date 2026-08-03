@@ -204,13 +204,13 @@ const processMarkdown = (eleventyConfig) => {
   });
 };
 
-export default function (eleventyConfig) {
+export default async function (eleventyConfig) {
   eleventyConfig.on("eleventy.before", async () => {
     if (isProd) fs.rmSync("_site", { recursive: true, force: true });
     await bundleClientAssets();
   });
   if (isProd) {
-    eleventyConfig.on("eleventy.before", bundleSSRAssets);
+    await bundleSSRAssets();
     eleventyConfig.addPlugin(litPlugin, {
       mode: "worker",
       componentModules: ["_temp/ssr-entrypoint.js"],
