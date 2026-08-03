@@ -70,6 +70,8 @@ const getPermalink = (filePath) => {
 const bundleClientAssets = async () => {
   console.log("[seele-docs-skeleton] Bundling client assets");
 
+  fs.mkdirSync("_site/client", { recursive: true });
+
   const componentEntryPoints = fs
     .globSync([
       "node_modules/@vollowx/seele/src/m3/*/*.js",
@@ -96,7 +98,6 @@ const bundleClientAssets = async () => {
         minify: isProd,
         sourceMap: !isProd,
       });
-      fs.mkdirSync("_site/client", { recursive: true });
       fs.writeFileSync("_site/client/main.css", code);
       if (map) fs.writeFileSync("_site/client/main.css.map", map);
     })(),
@@ -105,6 +106,8 @@ const bundleClientAssets = async () => {
 
 const bundleSSRAssets = async () => {
   console.log("[seele-docs-skeleton] Bundling SSR assets");
+
+  fs.mkdirSync("_temp", { recursive: true });
 
   await Promise.all([
     esbuild.build({
@@ -118,7 +121,7 @@ const bundleSSRAssets = async () => {
     esbuild.build({
       ...esbuildOpts,
       entryPoints: ["src/ssr-entrypoint.ts"],
-      outfile: ".tmp/ssr-entrypoint.js",
+      outfile: "_temp/ssr-entrypoint.js",
       platform: "node",
       minify: false,
       sourcemap: false,
@@ -202,16 +205,18 @@ const processMarkdown = (eleventyConfig) => {
 };
 
 export default function (eleventyConfig) {
-  eleventyConfig.on("eleventy.before", bundleClientAssets);
+  eleventyConfig.on("eleventy.before", async () => {
+    if (isProd) fs.rmSync("_site", { recursive: true, force: true });
+    await bundleClientAssets();
+  });
   if (isProd) {
-    fs.rmSync("_site", { recursive: true, force: true });
     eleventyConfig.on("eleventy.before", bundleSSRAssets);
     eleventyConfig.addPlugin(litPlugin, {
       mode: "worker",
-      componentModules: [".tmp/ssr-entrypoint.js"],
+      componentModules: ["_temp/ssr-entrypoint.js"],
     });
     eleventyConfig.on("eleventy.after", () => {
-      fs.rmSync(".tmp", { recursive: true, force: true });
+      fs.rmSync("_temp", { recursive: true, force: true });
     });
   }
 
