@@ -92,6 +92,14 @@ const bundleClientAssets = async () => {
       entryPoints: ["./src/client.ts"],
       outfile: "_site/client/main.js",
     }),
+    esbuild.build({
+      ...esbuildOpts,
+      entryPoints: ["src/lit-hydrate-support.ts"],
+      outfile: "_site/client/lit-hydrate-support.js",
+      minify: true,
+      sourcemap: false,
+      splitting: false,
+    }),
     (async () => {
       const { code, map } = bundle({
         filename: path.resolve("src/client.css"),
@@ -109,24 +117,14 @@ const bundleSSRAssets = async () => {
 
   fs.mkdirSync("_temp", { recursive: true });
 
-  await Promise.all([
-    esbuild.build({
-      ...esbuildOpts,
-      entryPoints: ["src/lit-hydrate-support.ts"],
-      outfile: "_site/client/lit-hydrate-support.js",
-      minify: true,
-      sourcemap: false,
-      splitting: false,
-    }),
-    esbuild.build({
-      ...esbuildOpts,
-      entryPoints: ["src/ssr-entrypoint.ts"],
-      outfile: "_temp/ssr-entrypoint.js",
-      platform: "node",
-      minify: false,
-      sourcemap: false,
-    }),
-  ]);
+  await esbuild.build({
+    ...esbuildOpts,
+    entryPoints: ["src/ssr-entrypoint.ts"],
+    outfile: "_temp/ssr-entrypoint.js",
+    platform: "node",
+    minify: false,
+    sourcemap: false,
+  });
 };
 
 const processMarkdown = (eleventyConfig) => {
