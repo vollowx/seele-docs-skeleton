@@ -33,14 +33,14 @@
     </footer>
 
     {% macro renderEntries(prefix, items, pageUrl) %}
-      <ul>
+    <ul>
         {%- for item in items | sort(false, false, 'filePathStem') %}
           {%- set isSub = "/base/" in item.url or "/m3/" in item.url or "/win98/" in item.url %}
           {%- if (prefix == "/" and not isSub) or (prefix != "/" and prefix in item.url) %}
-            <li><a href="{{ item.url }}"{% if pageUrl == item.url %} aria-current="page"{% endif %}>{{ item.data.label or item.url }}</a></li>
+      <li><a href="{{ item.url }}"{% if pageUrl == item.url %} aria-current="page"{% endif %}>{{ item.data.label or item.url }}</a></li>
           {%- endif %}
         {%- endfor %}
-      </ul>
+    </ul>
     {% endmacro %}
 
     <nav>

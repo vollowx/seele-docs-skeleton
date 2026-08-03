@@ -4,10 +4,13 @@ import esbuild from "esbuild";
 import { bundle } from "lightningcss";
 import litPlugin from "@lit-labs/eleventy-plugin-lit";
 import syntaxHighlight from "@11ty/eleventy-plugin-syntaxhighlight";
+import { HtmlBasePlugin } from "@11ty/eleventy";
+
 import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
 
 const isProd = process.env.ELEVENTY_RUN_MODE === "build";
+const pathPrefix = process.env.PREFIX || "/";
 const esbuildOpts = {
   bundle: true,
   format: "esm",
@@ -239,6 +242,7 @@ export default async function (eleventyConfig) {
 
   processMarkdown(eleventyConfig);
   eleventyConfig.addPlugin(syntaxHighlight);
+  eleventyConfig.addPlugin(HtmlBasePlugin);
 
   eleventyConfig.setServerOptions({ port: 22331 });
 
@@ -250,5 +254,6 @@ export default async function (eleventyConfig) {
     },
     markdownTemplateEngine: "njk",
     htmlTemplateEngine: "njk",
+    pathPrefix: pathPrefix,
   };
 }
