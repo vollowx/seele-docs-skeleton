@@ -135,6 +135,7 @@ body {
 }
 
 nav {
+  box-sizing: border-box;
   ul {
     list-style-type: none;
     padding-inline-start: 0;
@@ -152,10 +153,12 @@ nav {
   nav {
     position: fixed;
     top: 0;
-    inset-inline-start: 16px;
+    inset-inline-start: 0;
+    padding-inline: 16px;
     height: 100%;
-    width: 224px;
+    width: 240px;
     overflow-y: auto;
+    border-inline-end: 1px solid var(--md-sys-color-outline-variant);
 
     h2 {
       height: 0;

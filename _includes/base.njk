@@ -46,12 +46,18 @@
     <nav>
       <h2>Entries</h2>
       {{ renderEntries("/", collections.all, page.url) }}
-      <span>/base</span>
-      {{ renderEntries("/base/", collections.all, page.url) }}
-      <span>/m3</span>
-      {{ renderEntries("/m3/", collections.all, page.url) }}
-      <span>/win98</span>
-      {{ renderEntries("/win98/", collections.all, page.url) }}
+      <details open>
+        <summary>Material You Expressive</summary>
+        {{ renderEntries("/m3/", collections.all, page.url) }}
+      </details>
+      <details open>
+        <summary>Windows 98</summary>
+        {{ renderEntries("/win98/", collections.all, page.url) }}
+      </details>
+      <details open>
+        <summary>Base (API only)</summary>
+        {{ renderEntries("/base/", collections.all, page.url) }}
+      </details>
     </nav>
 
     <script>
