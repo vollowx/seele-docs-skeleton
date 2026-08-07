@@ -12,7 +12,7 @@
     "markdown-it-anchor": "^9.2.1"
   },
   "dependencies": {
-    "@vollowx/seele": "../seele/vollowx-seele-0.13.8.tgz",
+    "@vollowx/seele": "^0.13.8",
     "iconify-icon": "^3.0.2",
     "lit": "^3.3.3"
   },

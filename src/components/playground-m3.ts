@@ -8,6 +8,7 @@ import "@vollowx/seele/m3/fab/fab.js";
 
 import "@vollowx/seele/m3/checkbox/checkbox.js";
 import "@vollowx/seele/m3/radio/radio.js";
+import "@vollowx/seele/m3/select/filled-select.js";
 import "@vollowx/seele/m3/select/outlined-select.js";
 import "@vollowx/seele/m3/select/option.js";
 import "@vollowx/seele/m3/slider/slider.js";
@@ -58,6 +59,9 @@ export class PlaygroundM3 extends LitElement {
 
   static override styles = [
     css`
+      a {
+        color: var(--md-sys-color-primary);
+      }
       :host {
         display: grid;
         gap: 3rem 1.5rem;
@@ -116,9 +120,20 @@ export class PlaygroundM3 extends LitElement {
       }
 
       .demo {
-        overflow: auto;
         flex: 1;
         padding-block: 16px;
+
+        &:not(.unlimited) {
+          overflow: auto;
+        }
+
+        div:has(md-ripple) {
+          height: 100%;
+          width: 100%;
+          background: var(--md-sys-color-surface-container-lowest);
+          border-radius: 28px;
+          position: relative;
+        }
 
         [role=radiogroup] > div {
           display: flex;
@@ -155,6 +170,7 @@ export class PlaygroundM3 extends LitElement {
       </div>
       <div>${this.renderButton()}</div>
       <div>${this.renderIconButton()}</div>
+      <div>${this.renderFAB()}</div>
       <div>${this.renderButtonGroup()}</div>
       <div>
         <div class="conf">
@@ -199,9 +215,27 @@ export class PlaygroundM3 extends LitElement {
         </div>
       </div>
       <div>${this.renderRadio()}</div>
+      <div>
+        <div class="conf">
+          <h2 class="animated">Ripple</h2>
+        </div>
+        <div class="demo unlimited">
+          <div
+            tabindex="0"
+            aria-label="Demo ripple container"
+          ><md-ripple></md-ripple></div>
+        </div>
+      </div>
+      <div>${this.renderSelect()}</div>
       <div>${this.renderTabs()}</div>
       <div>${this.renderTextField()}</div>
       <div>${this.renderToolbar()}</div>
+      <div>
+        <p><i>
+          * This demo grid takes inspiration from
+          <a href="https://kendell.dev/m3-svelte/">the website of m3-svelte</a>.
+        </i></p>
+      </div>
     `;
   }
 
@@ -272,6 +306,40 @@ export class PlaygroundM3 extends LitElement {
         >
           ${this.renderSampleIcon(false)}
         </md-icon-button>
+      </div>
+    `;
+  }
+
+  @state() fabColor = 'primary';
+  @state() fabSize = 2;
+  @state() fabLabelled = false;
+  @state() fabDisabled = false;
+  renderFAB() {
+    return html`
+      <div class="conf">
+        <h2>Floating action button</h2>
+        ${this.renderStrOpt(
+          "color",
+          [
+            "surface", "primary", "secondary", "tertiary", "primary-container",
+            "secondary-container", "tertiary-container"
+          ],
+          "primary",
+          (e: any) => (this.fabColor = e.target.value),
+        )}
+        ${this.renderSize("Size", (e: any) => (this.fabSize = e.target.value), false)}
+        ${this.renderBool('Labelled', (e: any) => (this.fabLabelled = e.detail))}
+        ${this.renderBool('Disabled', (e: any) => (this.fabDisabled = e.detail))}
+      </div>
+      <div class="demo">
+        <md-fab
+          .color=${this.fabColor}
+          .size=${sizeFrom(this.fabSize)}
+          .disabled=${this.fabDisabled}
+        >
+          ${this.renderSampleIcon(false)}
+          ${this.fabLabelled && this.fabSize == 2 ? html`<span slot=label>Label</span>` : ""}
+        </md-button>
       </div>
     `;
   }
@@ -399,12 +467,14 @@ export class PlaygroundM3 extends LitElement {
   }
 
   menuRef: Ref<Menu> = createRef();
+  @state() menuQuick = false;
   @state() menuVibrant = true;
   renderMenu() {
     return html`
       <div class="conf">
         <h2>Menu</h2>
-        ${this.renderBool('Vibrant', (e: any) => (this.menuVibrant = e.detail), true)}
+        ${this.renderBool("Quick", (e: any) => (this.menuQuick = e.detail))}
+        ${this.renderBool("Vibrant", (e: any) => (this.menuVibrant = e.detail), true)}
       </div>
       <div class="demo">
         <md-button
@@ -413,7 +483,11 @@ export class PlaygroundM3 extends LitElement {
           @click=${() => (this.menuRef.value!.open = !this.menuRef.value!.open)}
           >File</md-button
         >
-        <md-menu for="menu-trigger" ${ref(this.menuRef)} .color=${this.menuVibrant ? 'vibrant' : 'standard'}>
+        <md-menu
+          for="menu-trigger" ${ref(this.menuRef)}
+          .quick=${this.menuQuick}
+          .color=${this.menuVibrant ? "vibrant" : "standard"}
+        >
           <md-menu-item>New Text File</md-menu-item>
           <md-menu-item>New File...</md-menu-item>
           <md-menu-item>
@@ -461,17 +535,48 @@ export class PlaygroundM3 extends LitElement {
     `;
   }
 
+  @state() selectError = false;
+  renderSelect() {
+    return html`
+      <div class="conf">
+        <h2>Select</h2>
+        ${this.renderBool('Error', (e: any) => (this.selectError = e.detail))}
+      </div>
+      <div class="demo unlimited">
+        <md-filled-select name="fruit" label="Fruit" .error=${this.selectError}>
+          <md-option value="apple">Apple</md-option>
+          <md-option value="apricot">Apricot</md-option>
+          <md-option value="banana">Banana</md-option>
+          <md-option value="cherry">Cherry</md-option>
+          <md-option value="grape">Grape</md-option>
+          <md-option value="lemon">Lemon</md-option>
+          <md-option value="mango">Mango</md-option>
+          <md-option value="orange">Orange</md-option>
+          <md-option value="strawberry">Strawberry</md-option>
+          <md-option value="watermelon">Watermelon</md-option>
+        </md-filled-select>
+      </div>
+    `;
+  }
+
+  @state() tabsAuto = false;
   @state() tabsIcon = true;
   @state() tabsIconsAbove = true;
   renderTabs() {
     return html`
       <div class="conf">
         <h2 class="animated">Tabs</h2>
+        ${this.renderBool('Auto switch', (e: any) => (this.tabsAuto = e.detail))}
         ${this.renderBool('Icons', (e: any) => (this.tabsIcon = e.detail), true)}
         ${this.renderBool('Icons above', (e: any) => (this.tabsIconsAbove = e.detail), true)}
       </div>
       <div class="demo">
-        <md-tabs selected="2" style="width: 100%" .iconsAbove=${this.tabsIconsAbove && this.tabsIcon}>
+        <md-tabs
+          selected="2"
+          style="width: 100%"
+          .switch=${this.tabsAuto ? "auto" : "manual"}
+          .iconsAbove=${this.tabsIconsAbove && this.tabsIcon}
+        >
           <md-tab value="1">
             ${this.tabsIcon ? this.renderSampleIcon() : ''}
             All
@@ -522,21 +627,19 @@ export class PlaygroundM3 extends LitElement {
     `;
   }
 
-  @state() fabSize = 2;
   @state() toolbarFloating = true;
   @state() toolbarVibrant = true;
   renderToolbar() {
     return html`
       <div class="conf">
-        <h2>Toolbar, tooltip and FAB</h2>
+        <h2>Toolbar, tooltip</h2>
         ${this.renderBool('Floating (toolbar)', (e: any) => (this.toolbarFloating = e.detail), true)}
         ${this.renderBool('Vibrant (toolbar)', (e: any) => (this.toolbarVibrant = e.detail), true)}
-        ${this.renderSize("Size (of FAB)", (e: any) => (this.fabSize = e.target.value), false)}
       </div>
       <div class="demo">
         <md-toolbar
-          type="${this.toolbarFloating ? 'floating' : 'docked'}"
-          color=${this.toolbarVibrant ? 'vibrant' : 'standard'}
+          type=${this.toolbarFloating ? "floating" : "docked"}
+          color=${this.toolbarVibrant ? "vibrant" : "standard"}
         >
           <md-icon-button id="toolbar-archive">
             <iconify-icon icon="material-symbols:archive"></iconify-icon>
@@ -562,7 +665,7 @@ export class PlaygroundM3 extends LitElement {
 
           ${this.toolbarFloating ?
             html`
-              <md-fab slot="fab" color="tertiary" id="toolbar-reply" .size=${sizeFrom(this.fabSize)}>
+              <md-fab slot="fab" color="tertiary" id="toolbar-reply">
                 <iconify-icon icon="material-symbols:reply"></iconify-icon>
               </md-fab>
               <md-tooltip offset="8" for="toolbar-reply">Reply</md-tooltip>
@@ -571,6 +674,8 @@ export class PlaygroundM3 extends LitElement {
       </div>
     `;
   }
+
+  // Utils
 
   renderStrOpt(
     label: string,
