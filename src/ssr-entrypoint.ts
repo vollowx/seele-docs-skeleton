@@ -4,3 +4,4 @@
  */
 
 import "@vollowx/seele";
+import "./components/playground-m3.js";

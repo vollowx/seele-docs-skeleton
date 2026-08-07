@@ -70,23 +70,37 @@ const getPermalink = (filePath) => {
   return `${result}/`;
 };
 
+const toEntry = (file, outbase) => ({
+  in: file,
+  out: path.relative(outbase, file).replace(/\.[^/.]+$/, ""),
+});
+
 const bundleClientAssets = async () => {
   console.log("[seele-docs-skeleton] Bundling client assets");
 
   fs.mkdirSync("_site/client", { recursive: true });
 
-  const componentEntryPoints = fs
+  const seeleCompEntryPoints = fs
     .globSync([
       "node_modules/@vollowx/seele/src/m3/*/*.js",
       "node_modules/@vollowx/seele/src/win98/*/*.js",
     ])
-    .filter((path) => !path.endsWith(".css.js"));
+    .filter((path) => !path.endsWith(".css.js"))
+    .map((file) => toEntry(file, "node_modules/@vollowx/seele/src"));
+  const localCompEntryPoints = fs
+    .globSync([
+      "src/components/*.ts",
+    ])
+    .filter((path) => !path.endsWith(".css.js"))
+    .map((file) => toEntry(file, "src/components"));
 
   await Promise.all([
     esbuild.build({
       ...esbuildOpts,
-      entryPoints: componentEntryPoints,
-      outbase: "node_modules/@vollowx/seele/src",
+      entryPoints: [
+        ...seeleCompEntryPoints,
+        ...localCompEntryPoints
+      ],
       outdir: "_site/client",
       splitting: true,
     }),
@@ -99,7 +113,6 @@ const bundleClientAssets = async () => {
       ...esbuildOpts,
       entryPoints: ["src/lit-hydrate-support.ts"],
       outfile: "_site/client/lit-hydrate-support.js",
-      minify: true,
       sourcemap: false,
       splitting: false,
     }),
