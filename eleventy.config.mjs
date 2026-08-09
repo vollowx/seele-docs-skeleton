@@ -88,9 +88,7 @@ const bundleClientAssets = async () => {
     .filter((path) => !path.endsWith(".css.js"))
     .map((file) => toEntry(file, "node_modules/@vollowx/seele/src"));
   const localCompEntryPoints = fs
-    .globSync([
-      "src/components/*.ts",
-    ])
+    .globSync(["src/components/*.ts"])
     .filter((path) => !path.endsWith(".css.js"))
     .map((file) => toEntry(file, "src/components"));
 
@@ -99,15 +97,11 @@ const bundleClientAssets = async () => {
       ...esbuildOpts,
       entryPoints: [
         ...seeleCompEntryPoints,
-        ...localCompEntryPoints
+        ...localCompEntryPoints,
+        { in: "./src/client.ts", out: "main" },
       ],
       outdir: "_site/client",
       splitting: true,
-    }),
-    esbuild.build({
-      ...esbuildOpts,
-      entryPoints: ["./src/client.ts"],
-      outfile: "_site/client/main.js",
     }),
     esbuild.build({
       ...esbuildOpts,

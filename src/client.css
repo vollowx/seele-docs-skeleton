@@ -130,7 +130,7 @@
   --md-sys-typography-family: -apple-system, BlinkMacSystemFont, Arial, serif;
 }
 
-:root[data-m3-motion-scheme=standard] {
+:root[data-m3-motion-scheme="standard"] {
   --md-sys-motion-spatial-fast: cubic-bezier(0.27, 1.06, 0.18, 1);
   --md-sys-motion-spatial-fast-duration: 350ms;
   --md-sys-motion-spatial-default: cubic-bezier(0.27, 1.06, 0.18, 1);
@@ -156,6 +156,16 @@ body {
   }
 }
 
+a[href="#main"]:not(:focus) {
+  display: block;
+  height: 0;
+  overflow: hidden;
+}
+
+md-nav-rail {
+  display: none;
+  box-sizing: border-box;
+}
 nav {
   box-sizing: border-box;
   ul {
@@ -169,13 +179,24 @@ nav {
 
 @media (min-width: 1056px) {
   body {
-    margin-inline-start: 256px;
+    margin-inline-start: 352px;
+  }
+  body.playground {
+    margin-inline-start: 112px;
   }
 
-  nav {
+  md-nav-rail {
     position: fixed;
     top: 0;
     inset-inline-start: 0;
+    display: grid;
+    background-color: var(--md-sys-color-surface);
+    border-inline-end: 1px solid var(--md-sys-color-outline-variant);
+  }
+  nav {
+    position: fixed;
+    top: 0;
+    inset-inline-start: 96px;
     padding-inline: 16px;
     height: 100%;
     width: 240px;

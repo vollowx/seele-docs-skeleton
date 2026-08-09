@@ -18,19 +18,19 @@
       <style> body[dsd-pending] { display: block !important; } </style>
     </noscript>
   </head>
-  <body dsd-pending>
-    <main>
-      {{ content | safe }}
-    </main>
+  <body dsd-pending class="{% if active == 'playground' %}playground{% endif %}">
+    <a href="#main">Skip to main contents</a>
 
-    <footer>
-      <md-divider></md-divider>
-      <p>
-        Copyright © 2023-2026 by Lucas X. Zhao.<br />
-        Last built at {{ buildTime.formatted }} with Eleventy {{ eleventy.version }}.
-      </p>
-      <md-divider></md-divider>
-    </footer>
+    <md-nav-rail>
+      <md-nav-rail-item label="Playground" onclick="navigation.navigate('{{ '/m3/playground/' | url }}')" {% if active == 'playground' %}active{% endif %}>
+        <iconify-icon icon="material-symbols:category-outline"></iconify-icon>
+        <iconify-icon slot="active" icon="material-symbols:category"></iconify-icon>
+      </md-nav-rail-item>
+      <md-nav-rail-item label="Docs" onclick="navigation.navigate('{{ '/' | url }}')" {% if active != 'playground' %}active{% endif %}>
+        <iconify-icon icon="material-symbols:book"></iconify-icon>
+        <iconify-icon slot="active" icon="material-symbols:book-outline"></iconify-icon>
+      </md-nav-rail-item>
+    </md-nav-rail>
 
     {% macro renderEntries(prefix, items, pageUrl) %}
     <ul>
@@ -43,6 +43,7 @@
     </ul>
     {% endmacro %}
 
+    {% if active != "playground" %}
     <nav>
       <h2>Entries</h2>
       {{ renderEntries("/", collections.all, page.url) }}
@@ -59,6 +60,20 @@
         {{ renderEntries("/base/", collections.all, page.url) }}
       </details>
     </nav>
+    {% endif %}
+
+    <main id="main">
+      {{ content | safe }}
+    </main>
+
+    <footer>
+      <md-divider></md-divider>
+      <p>
+        Copyright © 2023-2026 by Lucas X. Zhao.<br />
+        Last built at {{ buildTime.formatted }} with Eleventy {{ eleventy.version }}.
+      </p>
+      <md-divider></md-divider>
+    </footer>
 
     <script>
       (function() {
