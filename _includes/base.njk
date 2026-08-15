@@ -70,7 +70,15 @@
       <md-divider></md-divider>
       <p>
         Copyright © 2023-2026 by Lucas X. Zhao.<br />
-        Last built at {{ buildTime.formatted }} with Eleventy {{ eleventy.version }}.
+        Last built at {{ buildTime.formatted }} with
+        Eleventy {{ eleventy.version }},
+        seele <a href="{{ seeleLink }}">{{ seeleVersion }}</a>,
+        and seele-docs-skeleton:
+        {%- if skeletonDirty -%}
+          {{ skeletonCommit }}-dirty
+        {%- else -%}
+          <a href="{{ skeletonLink }}">{{ skeletonCommit }}</a>
+        {%- endif -%}
       </p>
       <md-divider></md-divider>
     </footer>

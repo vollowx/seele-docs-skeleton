@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import cp from "node:child_process";
 import esbuild from "esbuild";
 import { bundle } from "lightningcss";
 import litPlugin from "@lit-labs/eleventy-plugin-lit";
@@ -10,7 +11,6 @@ import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
 
 const isProd = process.env.ELEVENTY_RUN_MODE === "build";
-const pathPrefix = process.env.PREFIX || "/";
 const esbuildOpts = {
   bundle: true,
   format: "esm",
@@ -18,6 +18,52 @@ const esbuildOpts = {
   minify: isProd,
   sourcemap: !isProd,
 };
+
+const isSemver = (v) => /^\d+\.\d+\.\d+$/.test(v);
+const pathPrefix = process.env.SK_PREFIX || "/";
+
+const getSeeleVersion = () => {
+  const envVersion = process.env.SK_SEELE_VERSION;
+  if (envVersion) {
+    return { version: envVersion, overridden: true };
+  }
+
+  const pkg = JSON.parse(
+    fs.readFileSync(new URL("./package.json", import.meta.url), "utf8"),
+  );
+  const dep = pkg.dependencies?.["@vollowx/seele"];
+  if (!dep) return { version: "unknown", overridden: false };
+
+  const stripped = dep.replace(/^[~^]/, "");
+  const version = isSemver(stripped) ? stripped : "unknown";
+  return { version, overridden: false };
+};
+
+const getSkeletonVersion = () => {
+  const envNotDirty = process.env.SK_NOT_DIRTY === "true";
+  try {
+    const commit = cp
+      .execSync("git rev-parse HEAD", { encoding: "utf8" })
+      .trim();
+    const status = cp.execSync("git status --porcelain", { encoding: "utf8" });
+    const dirty = status.trim().length > 0;
+    return { commit, dirty: envNotDirty ? false : dirty };
+  } catch (e) {
+    return { commit: "unknown", dirty: envNotDirty ? false : true };
+  }
+};
+
+const seele = getSeeleVersion();
+const skeleton = getSkeletonVersion();
+
+const seeleLink = seele.overridden || seele.version === "unknown"
+  ? "https://github.com/vollowx/seele"
+  : `https://www.npmjs.com/package/@vollowx/seele/v/${seele.version}`;
+
+const skeletonLink = skeleton.dirty
+  ? null
+  : `https://github.com/vollowx/seele-docs-skeleton/commit/${skeleton.commit}`;
+skeleton.commit = skeleton.commit.substring(0, 7);
 
 const now = () => {
   const now = new Date();
@@ -232,6 +278,12 @@ export default async function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("seele/docs/**/*.png");
   eleventyConfig.addPassthroughCopy("seele/docs/**/*.svg");
 
+  eleventyConfig.addGlobalData("seeleVersion", seele.version);
+  eleventyConfig.addGlobalData("seeleOverridden", seele.overridden);
+  eleventyConfig.addGlobalData("seeleLink", seeleLink);
+  eleventyConfig.addGlobalData("skeletonCommit", skeleton.commit);
+  eleventyConfig.addGlobalData("skeletonDirty", skeleton.dirty);
+  eleventyConfig.addGlobalData("skeletonLink", skeletonLink);
   eleventyConfig.addGlobalData("buildTime", now());
   eleventyConfig.addGlobalData("layout", "base.njk");
   eleventyConfig.addGlobalData("eleventyComputed", {
