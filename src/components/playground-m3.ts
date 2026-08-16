@@ -86,6 +86,7 @@ export class PlaygroundM3 extends LitElement {
       :host > div {
         display: flex;
         flex-direction: column;
+        min-width: 0;
       }
 
       .conf {
@@ -112,6 +113,7 @@ export class PlaygroundM3 extends LitElement {
           justify-content: space-between;
           min-height: 48px;
           padding-block: 4px;
+          font: var(--md-sys-typography-label-large);
 
           md-slider {
             margin-inline-end: -24px;
@@ -223,6 +225,7 @@ export class PlaygroundM3 extends LitElement {
           <div
             tabindex="0"
             aria-label="Demo ripple container"
+            style="min-height: 300px"
           ><md-ripple></md-ripple></div>
         </div>
       </div>
@@ -319,7 +322,7 @@ export class PlaygroundM3 extends LitElement {
       <div class="conf">
         <h2>Floating action button</h2>
         ${this.renderStrOpt(
-          "color",
+          "Color",
           [
             "surface", "primary", "secondary", "tertiary", "primary-container",
             "secondary-container", "tertiary-container"
