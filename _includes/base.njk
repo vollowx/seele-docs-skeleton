@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title or "seele docs" }}</title>
+    <meta name="description" content="{{ desc or 'Documentation of seele the Web Components library.' }}" />
+    <meta name="keywords" content="seele, web components, documentation, components, library, ui, design system, material design, material you" />
+    <meta name="author" content="Vollow" />
+
     <link href="/client/main.css" rel="stylesheet" />
     <script type="module" src="/client/lit-hydrate-support.js"></script>
     <script type="module" src="/client/main.js"></script>
@@ -17,6 +21,18 @@
     <noscript>
       <style> body[dsd-pending] { display: block !important; } </style>
     </noscript>
+
+    <script>
+      (() => {
+        const theme = localStorage.getItem("md-color-scheme") || "auto";
+        const motion = localStorage.getItem("md-motion-scheme") || "expressive";
+
+        const html = document.documentElement;
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        html.dataset.mdColorScheme = theme === "auto" ? (prefersDark ? "dark" : "light") : theme;
+        html.dataset.mdMotionScheme = motion;
+      })();
+    </script>
   </head>
   <body dsd-pending class="{% if active == 'playground' %}playground{% endif %}">
     <a href="#main">Skip to main contents</a>
@@ -27,8 +43,8 @@
         <iconify-icon slot="active" icon="material-symbols:category"></iconify-icon>
       </md-nav-rail-item>
       <md-nav-rail-item label="Docs" onclick="navigation.navigate('{{ '/' | url }}')" {% if active != 'playground' %}active{% endif %}>
-        <iconify-icon icon="material-symbols:book"></iconify-icon>
-        <iconify-icon slot="active" icon="material-symbols:book-outline"></iconify-icon>
+        <iconify-icon icon="material-symbols:book-outline"></iconify-icon>
+        <iconify-icon slot="active" icon="material-symbols:book"></iconify-icon>
       </md-nav-rail-item>
     </md-nav-rail>
 
@@ -63,6 +79,8 @@
     {% endif %}
 
     <main id="main">
+      <docs-config></docs-config>
+
       {{ content | safe }}
     </main>
 
