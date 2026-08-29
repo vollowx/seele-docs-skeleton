@@ -622,7 +622,7 @@ export class PlaygroundM3 extends LitElement {
         <md-filled-text-field
           label="Filter"
           placeholder="Placeholder"
-          supportingtext="* requird"
+          supporting-text="* requird"
           required
         ></md-filled-text-field>
         <md-outlined-text-field type="number" label="Height"></md-outlined-text-field>
@@ -730,7 +730,7 @@ export class PlaygroundM3 extends LitElement {
         ${label}
         <md-switch
           icons
-          checkedicononly
+          checked-icon-only
           ?checked=${checked}
           @change=${callback}
         ></md-switch>
