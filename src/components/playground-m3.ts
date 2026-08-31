@@ -19,7 +19,7 @@ import "@vollowx/seele/m3/text-field/outlined-text-field.js";
 import "@vollowx/seele/m3/dialog/dialog.js";
 import "@vollowx/seele/m3/list/list.js";
 import "@vollowx/seele/m3/loading-indicator/loading-indicator.js";
-import "@vollowx/seele/m3/menu/menu.js";
+import "@vollowx/seele/m3/menu/composed-menu.js";
 import "@vollowx/seele/m3/menu/menu-item.js";
 import "@vollowx/seele/m3/tab/tab.js";
 import "@vollowx/seele/m3/tab/tab-panel.js";
@@ -27,7 +27,6 @@ import "@vollowx/seele/m3/tab/tabs.js";
 import "@vollowx/seele/m3/toolbar/toolbar.js";
 import "@vollowx/seele/m3/tooltip/tooltip.js";
 import type { Dialog } from "@vollowx/seele/base/dialog.js";
-import type { Menu } from "@vollowx/seele/base/menu.js";
 
 import { LitElement, css, html, nothing } from "lit";
 import { customElement, state } from "lit/decorators.js";
@@ -151,8 +150,6 @@ export class PlaygroundM3 extends LitElement {
    * It is fine to use `?trailing-icon` and `.trailingIcon` since most of the
    * style attributes have their corresponding properties.
    * Just in case ( ._.)/
-   *
-   * TODO: unify multi-word attributes to aaabbb, remove all aaa-bbb
    */
   override render() {
     return html`
@@ -469,27 +466,22 @@ export class PlaygroundM3 extends LitElement {
     `;
   }
 
-  menuRef: Ref<Menu> = createRef();
-  @state() menuQuick = false;
   @state() menuVibrant = true;
   renderMenu() {
     return html`
       <div class="conf">
         <h2>Menu</h2>
-        ${this.renderBool("Quick", (e: any) => (this.menuQuick = e.detail))}
         ${this.renderBool("Vibrant", (e: any) => (this.menuVibrant = e.detail), true)}
       </div>
       <div class="demo">
         <md-button
           id="menu-trigger"
           variant="tonal"
-          @click=${() => (this.menuRef.value!.open = !this.menuRef.value!.open)}
           >File</md-button
         >
-        <md-menu
-          for="menu-trigger" ${ref(this.menuRef)}
-          .quick=${this.menuQuick}
-          .color=${this.menuVibrant ? "vibrant" : "standard"}
+        <md-composed-menu
+          for="menu-trigger"
+          ?vibrant=${this.menuVibrant}
         >
           <md-menu-item>New Text File</md-menu-item>
           <md-menu-item>New File...</md-menu-item>
@@ -503,7 +495,7 @@ export class PlaygroundM3 extends LitElement {
           <md-divider inset></md-divider>
           <md-menu-item selected>Save</md-menu-item>
           <md-menu-item>Save As...</md-menu-item>
-        </md-menu>
+        </md-composed-menu>
       </div>
     `;
   }
