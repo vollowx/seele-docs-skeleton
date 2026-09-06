@@ -6,13 +6,14 @@
     "@11ty/eleventy": "^3.1.6",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
     "@lit-labs/eleventy-plugin-lit": "^1.0.6",
-    "esbuild": "^0.28.1",
+    "esbuild": "^0.28.2",
     "html-minifier": "^4.0.0",
     "lightningcss": "^1.33.0",
-    "markdown-it-anchor": "^9.2.1"
+    "markdown-it-anchor": "^9.2.1",
+    "@types/bun": "latest"
   },
   "dependencies": {
-    "@vollowx/seele": "^0.13.8",
+    "@vollowx/seele": "^0.14.1",
     "iconify-icon": "^3.0.2",
     "lit": "^3.3.3"
   },

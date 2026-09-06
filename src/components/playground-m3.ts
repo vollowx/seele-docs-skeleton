@@ -18,9 +18,10 @@ import "@vollowx/seele/m3/text-field/outlined-text-field.js";
 
 import "@vollowx/seele/m3/dialog/dialog.js";
 import "@vollowx/seele/m3/list/list.js";
-import "@vollowx/seele/m3/loading-indicator/loading-indicator.js";
+import "@vollowx/seele/m3/loading/loading.js";
 import "@vollowx/seele/m3/menu/composed-menu.js";
 import "@vollowx/seele/m3/menu/menu-item.js";
+// import "@vollowx/seele/m3/progress/linear-progress.js";
 import "@vollowx/seele/m3/tab/tab.js";
 import "@vollowx/seele/m3/tab/tab-panel.js";
 import "@vollowx/seele/m3/tab/tabs.js";
