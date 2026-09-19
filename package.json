@@ -13,8 +13,8 @@
     "@types/bun": "latest"
   },
   "dependencies": {
-    "@vollowx/seele": "^0.14.1",
-    "iconify-icon": "^3.0.2",
+    "@vollowx/seele": "^0.14.2",
+    "iconify-icon": "^3.0.3",
     "lit": "^3.3.3"
   },
   "scripts": {

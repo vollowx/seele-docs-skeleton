@@ -22,7 +22,7 @@ export class DocsConfig extends LitElement {
         inset-block-end: 16px;
         inset-inline-start: 50%;
         transform: translateX(-50%);
-        z-index: 50;
+        z-index: 1;
       }
     `,
   ];

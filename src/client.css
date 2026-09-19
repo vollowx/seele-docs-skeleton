@@ -147,7 +147,6 @@
 body {
   margin: 16px;
   max-width: 800px;
-  margin-block-end: 96px;
   overflow-wrap: break-word;
 
   &:has(playground-m3) {
@@ -193,7 +192,6 @@ a[href="#main"]:not(:focus) {
 
 md-nav-rail {
   display: none;
-  z-index: 40;
 }
 docs-config {
   display: none;
@@ -218,6 +216,7 @@ nav {
 @media (min-width: 1056px) {
   body {
     margin-inline-start: 352px;
+    margin-block-end: 96px;
   }
   body.playground {
     margin-inline-start: 112px;
@@ -228,8 +227,6 @@ nav {
     top: 0;
     inset-inline-start: 0;
     display: grid;
-    background-color: var(--md-sys-color-surface);
-    border-inline-end: 1px solid var(--md-sys-color-outline-variant);
   }
   docs-config {
     display: contents;
@@ -243,7 +240,6 @@ nav {
     height: 100%;
     width: 240px;
     overflow-y: auto;
-    border-inline-end: 1px solid var(--md-sys-color-outline-variant);
 
     h2 {
       height: 0;
