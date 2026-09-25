@@ -1,4 +1,4 @@
-import { LitElement, html, css, isServer } from "lit";
+import { LitElement, html, css } from "lit";
 import { customElement, state } from "lit/decorators.js";
 
 import "@vollowx/seele/m3/toolbar/toolbar.js";
@@ -72,7 +72,8 @@ export class DocsConfig extends LitElement {
 
   override firstUpdated() {
     this.theme = (localStorage.getItem("md-color-scheme") as Theme) || "auto";
-    this.motion = (localStorage.getItem("md-motion-scheme") as Motion) || "expressive";
+    this.motion =
+      (localStorage.getItem("md-motion-scheme") as Motion) || "expressive";
     this.#applyTheme();
     this.#applyMotion();
   }

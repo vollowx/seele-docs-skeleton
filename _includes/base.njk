@@ -78,9 +78,8 @@
     </nav>
     {% endif %}
 
+    <docs-config></docs-config>
     <main id="main">
-      <docs-config></docs-config>
-
       {{ content | safe }}
     </main>
 
@@ -88,10 +87,14 @@
       <md-divider></md-divider>
       <p>
         Copyright © 2023-2026 by Lucas X. Zhao.<br />
+        Docs are licensed under
+        <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>
+        unless otherwise noted.<br />
+        Demos are public domain unless otherwise noted.<br />
         Last built at {{ buildTime.formatted }} with
         Eleventy {{ eleventy.version }},
         seele <a href="{{ seeleLink }}">{{ seeleVersion }}</a>,
-        and seele-docs-skeleton
+        and seele-docs-skeleton&nbsp
         {%- if skeletonDirty -%}
           {{ skeletonCommit }}-dirty
         {%- else -%}
