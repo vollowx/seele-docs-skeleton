@@ -10,6 +10,8 @@ import { HtmlBasePlugin } from "@11ty/eleventy";
 import markdownIt from "markdown-it";
 import markdownItAnchor from "markdown-it-anchor";
 
+import { renderMarkdownShowBlocks } from "./src/render-show-blocks.js";
+
 const isProd = process.env.ELEVENTY_RUN_MODE === "build";
 const esbuildOpts = {
   bundle: true,
@@ -56,9 +58,10 @@ const getSkeletonVersion = () => {
 const seele = getSeeleVersion();
 const skeleton = getSkeletonVersion();
 
-const seeleLink = seele.overridden || seele.version === "unknown"
-  ? "https://github.com/vollowx/seele"
-  : `https://www.npmjs.com/package/@vollowx/seele/v/${seele.version}`;
+const seeleLink =
+  seele.overridden || seele.version === "unknown"
+    ? "https://github.com/vollowx/seele"
+    : `https://www.npmjs.com/package/@vollowx/seele/v/${seele.version}`;
 
 const skeletonLink = skeleton.dirty
   ? null
@@ -189,17 +192,8 @@ const processMarkdown = (eleventyConfig) => {
     {},
   );
 
-  // `<!-- @show -->`
   const defaultRender = md.render.bind(md);
-  md.render = (src, env) => {
-    if (src) {
-      src = src.replace(
-        /<!--\s*@show\s*-->\s*```html\r?\n([\s\S]*?)\r?\n```/gi,
-        (_, code) => `${code}\n\n\`\`\`html\n${code}\n\`\`\``,
-      );
-    }
-    return defaultRender(src, env);
-  };
+  md.render = (src, env) => renderMarkdownShowBlocks(src, env, defaultRender);
 
   const defaultLinkRender =
     md.renderer.rules.link_open ||
@@ -275,8 +269,8 @@ export default async function (eleventyConfig) {
   }
 
   eleventyConfig.addWatchTarget("./src/");
-  eleventyConfig.addPassthroughCopy("seele/docs/**/*.png");
-  eleventyConfig.addPassthroughCopy("seele/docs/**/*.svg");
+  eleventyConfig.addPassthroughCopy("docs/**/*.png");
+  eleventyConfig.addPassthroughCopy("docs/**/*.svg");
 
   eleventyConfig.addGlobalData("seeleVersion", seele.version);
   eleventyConfig.addGlobalData("seeleOverridden", seele.overridden);

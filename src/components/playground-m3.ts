@@ -21,7 +21,7 @@ import "@vollowx/seele/m3/list/list.js";
 import "@vollowx/seele/m3/loading/loading.js";
 import "@vollowx/seele/m3/menu/composed-menu.js";
 import "@vollowx/seele/m3/menu/menu-item.js";
-// import "@vollowx/seele/m3/progress/linear-progress.js";
+import "@vollowx/seele/m3/progress/linear-progress.js";
 import "@vollowx/seele/m3/tab/tab.js";
 import "@vollowx/seele/m3/tab/tab-panel.js";
 import "@vollowx/seele/m3/tab/tabs.js";
@@ -36,6 +36,7 @@ import { genUniqueId } from "@vollowx/seele/core/unique-id.js";
 
 const sizeFrom = (index: number) => ["xs", "s", "m", "l", "xl"][index - 1]
 
+// Dreamy dream:
 // const descriptions = {
 //   button: {
 //     variant:      limitedStr('filled', 'filled', 'tonal', 'elevated', 'outlined', 'text')
@@ -142,6 +143,14 @@ export class PlaygroundM3 extends LitElement {
           align-items: center;
           gap: 8px;
         }
+
+        md-linear-progress {
+          padding-block-end: 8px;
+
+          &.thicker {
+            --md-linear-progress-thickness: 8px;
+          }
+        }
       }
     `,
   ];
@@ -212,6 +221,16 @@ export class PlaygroundM3 extends LitElement {
             .checkedIconOnly=${this.switchCheckedIconOnly}
             .disabled=${this.switchDisabled}>
           </md-switch>
+        </div>
+      </div>
+      <div>
+        <div class="conf">
+          <h2 class="animated">Progress indicator</h2>
+        </div>
+        <div class="demo">
+          <md-linear-progress aria-label="Demo loading" value="75"></md-linear-progress>
+          <md-linear-progress aria-label="Demo loading" value="75" class="thicker"></md-linear-progress>
+          <md-linear-progress aria-label="Demo loading" indeterminate></md-linear-progress>
         </div>
       </div>
       <div>${this.renderRadio()}</div>
