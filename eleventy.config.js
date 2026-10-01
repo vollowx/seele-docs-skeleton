@@ -269,6 +269,8 @@ export default async function (eleventyConfig) {
   }
 
   eleventyConfig.addWatchTarget("./src/");
+
+  eleventyConfig.addPassthroughCopy("assets");
   eleventyConfig.addPassthroughCopy("docs/**/*.png");
   eleventyConfig.addPassthroughCopy("docs/**/*.svg");
 
