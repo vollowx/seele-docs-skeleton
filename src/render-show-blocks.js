@@ -4,17 +4,9 @@ export const SHOW_BLOCK_REGEX =
   /<!--\s*@show\s*-->\s*```html\r?\n([\s\S]*?)\r?\n```/gi;
 
 const SHOW_PREVIEW_WRAPPER = 'data-seele-show-preview="true"';
-const SHOW_PREVIEW_REGEX =
-  /^<div data-seele-show-preview="true">\n?([\s\S]*?)\n?<\/div>$/;
 
-const renderShowPreview = (code, env, render) => {
-  const wrapped = render(
-    `<div ${SHOW_PREVIEW_WRAPPER}>\n${code}\n</div>`,
-    env,
-  ).trim();
-  const match = wrapped.match(SHOW_PREVIEW_REGEX);
-  return match ? match[1] : code;
-};
+const renderShowPreview = (code) =>
+  `<div ${SHOW_PREVIEW_WRAPPER}>\n${code.trim()}\n</div>`;
 
 export const renderMarkdownShowBlocks = (src, env, render) => {
   if (!src) return render(src, env);
@@ -34,7 +26,7 @@ export const renderMarkdownShowBlocks = (src, env, render) => {
     new RegExp(`<!--${showBlockToken}:(\\d+)-->`, "g"),
     (_, idx) => {
       const code = showBlocks[Number(idx)];
-      const preview = renderShowPreview(code, env, render);
+      const preview = renderShowPreview(code);
       const snippet = render(`\`\`\`html\n${code}\n\`\`\``, env).trim();
       return `${preview}\n${snippet}`;
     },

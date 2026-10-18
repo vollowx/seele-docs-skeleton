@@ -1,6 +1,7 @@
 import "@vollowx/seele/m3/button/common-button.js";
-import "@vollowx/seele/m3/button/icon-button.js";
 import "@vollowx/seele/m3/button/common-button-toggle.js";
+import "@vollowx/seele/m3/button/common-button-link.js";
+import "@vollowx/seele/m3/button/icon-button.js";
 import "@vollowx/seele/m3/button/icon-button-toggle.js";
 import "@vollowx/seele/m3/button-group/connected-button-group.js";
 import "@vollowx/seele/m3/button-group/standard-button-group.js";
@@ -165,17 +166,13 @@ export class PlaygroundM3 extends LitElement {
     return html`
       <div>
         <h1>Material You Expressive Playground</h1>
-        <md-button
-          variant="tonal"
-          size="m"
-          @click=${() => navigation.navigate("../")}
-        >
+        <md-button-link variant="tonal" size="m" href="../">
           <iconify-icon
             slot="icon"
             icon="material-symbols:table-outline"
           ></iconify-icon>
           Read docs
-        </md-button>
+        </md-button-link>
       </div>
       <div>${this.renderButton()}</div>
       <div>${this.renderIconButton()}</div>

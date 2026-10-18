@@ -5,7 +5,7 @@
     "": {
       "name": "seele-docs-skeleton",
       "dependencies": {
-        "@vollowx/seele": "^0.14.2",
+        "@vollowx/seele": "^0.14.3",
         "iconify-icon": "^3.0.3",
         "lit": "^3.3.3",
       },
@@ -130,7 +130,7 @@
 
     "@types/trusted-types": ["@types/trusted-types@2.0.7", "", {}, "sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw=="],
 
-    "@vollowx/seele": ["@vollowx/seele@0.14.2", "", { "dependencies": { "@floating-ui/dom": "^1.8.0", "lit": "^3.3.3", "tslib": "^2.8.1" } }, "sha512-2oda1VuhyXD9t4Bzc7y5Mb+cBwuZDUWO7wfAdwWtrN13oyY8ih4hLs+j2gbl0n2S9XZ+lcLCzjM7X+QDS5498A=="],
+    "@vollowx/seele": ["@vollowx/seele@0.14.3", "", { "dependencies": { "@floating-ui/dom": "^1.8.0", "lit": "^3.3.3", "tslib": "^2.8.1" } }, "sha512-i7nQBBRE1jL7LFwvv0nuzaeU5ONdAauSUQ4QBpmJfAK2BPgB+oajTAdF8UWl8W51/zwu7HtBfCrapSTo3hvraA=="],
 
     "a-sync-waterfall": ["a-sync-waterfall@1.0.1", "", {}, "sha512-RYTOHHdWipFUliRFMCS4X2Yn2X8M87V/OpSqWzKKOGhzqyUxzyVmhHDH9sAvG+ZuQf/TAOFsLCpMw09I1ufUnA=="],
 
